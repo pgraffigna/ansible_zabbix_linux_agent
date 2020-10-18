@@ -1,0 +1,7 @@
+---
+- name: servicios
+  service:
+    name: zabbix-agent
+    state: restarted
+    enabled: yes
+    

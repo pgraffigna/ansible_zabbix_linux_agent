@@ -1,0 +1,28 @@
+---
+- name: Descargar zabbix-agent deb 
+  get_url:
+    url: "{{ url }}"
+    dest: /tmp/
+
+- name: Instalar deb 
+  apt:
+    deb: "/tmp/{{ deb }}"
+
+- name: Instalación zabbix-agent
+  apt: 
+    name: ['zabbix-agent']
+    update_cache: yes
+
+- name: Insertar líneas 
+  lineinfile:
+    path: /etc/zabbix/zabbix_agentd.conf
+    regexp: "{{ item.From }}"
+    line: "{{ item.To }}"
+    state: present
+  with_items:
+    - { From: "Server=127.0.0.1", To: "Server=192.168.60.10" }
+    - { From: "ServerActive=127.0.0.1", To: "ServerActive=192.168.60.10"}
+    - { From: "# HostMetadata=", To: "HostMetadata=Agente linux"}
+    - { From: "Hostname=Zabbix server", To: "Hostname=agente"}    
+  notify:
+    - servicios    

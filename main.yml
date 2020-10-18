@@ -1,0 +1,6 @@
+---
+- hosts: agente
+  become: true
+    
+  roles:	 
+    - zabbix-agent
